@@ -1,0 +1,15 @@
+Instalar virtual serial port
+- Agregar un par de puertos, para este proyecto COM5 Y COM6
+- Darle en create
+- Verificar en Administrador de dispositivos de Windows que los puertos seriales se hayan creado
+
+Configuración de Proteus:
+- AGREGAR un COMPIM
+- Agregar una virtual terminal
+- Conectar RX del COMPIM con el RX de la terminal y el TX de igual forma
+
+Librerias que instalar en el proyecto npm:
+- npm install express
+- npm install socket.io
+- npm install serialport
+

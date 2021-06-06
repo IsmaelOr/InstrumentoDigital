@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Node de Microcontrolador</title>
+</head>
+<body>
+    <h1>Node de PIC16F628A</h1>
+    <canvas width="500px" height="150px" id="myChart"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.3.2/dist/chart.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        socket.on('microcontrolador:data', function(dataSerial){
+            console.log(dataSerial);
+            //myChart.data.labels.push(counter);
+            myChart.data.datasets[0].data.pop();
+            myChart.data.datasets[0].data.push(dataSerial.value);
+            myChart.update();
+        });
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Distancia'],
+                datasets: [{
+                    axis: 'y',
+                    label: "Distancia Obtenida",
+                    backgroundColor: "rgb(52,73,94)",
+                    borderColor: 'rgb(41,128,185)',
+                    data: [],
+                    fill: false,
+                }]
+            },
+            options: {
+                indexAxis:'y',
+                responsive:true,
+                scales:{
+                    x:{
+                       max:50
+                       }
+                    }
+                }   
+        });
+    </script>
+    
+</body>
+</html>
+
