@@ -28,6 +28,7 @@ mySerial.on('open', function(){
 });
 
 //Imprimes los datos
+var enterog;
 
 mySerial.on("data", function(data){
     const Vresolucion = 0.0196078;
@@ -46,10 +47,10 @@ mySerial.on("data", function(data){
     const distancia = (Rsen - 10000)/(-200);
     console.log(distancia);
     //console.log(data.toString);
-    if(valorComBin !== enterog){
-    io.emit('microcontrolador:data',{
-        value: distancia.toString()
-    });
+    if(valorComBin != enterog){
+        io.emit('microcontrolador:data',{
+            value: distancia.toString()
+        });
     }
     enterog = valorComBin;
 });
