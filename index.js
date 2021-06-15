@@ -30,15 +30,28 @@ mySerial.on('open', function(){
 //Imprimes los datos
 
 mySerial.on("data", function(data){
-    /* 
-    const valorrecibido = data.toString();
-    // 10101101
-    valorrecibido = logica de Vresolucion 
-    */
-    console.log(data.toString());
+    const Vresolucion = 0.0196078;
+    const valorComBin = parseInt(data.toString('hex'),16);
+    console.log(valorComBin);
+    const Va = (valorComBin)*(Vresolucion)+0;
+    console.log(Va);
+    const E1_E2 = (Va) / (1.666666);
+    console.log(E1_E2);
+    const E2 = 3 - E1_E2;
+    console.log(E2);
+    const DeltaR = ((10000)*(6-(2*E2)))/(6-E2);
+    console.log(DeltaR);
+    const Rsen = 10000 - DeltaR;
+    console.log(Rsen);
+    const distancia = (Rsen - 10000)/(-200);
+    console.log(distancia);
+    //console.log(data.toString);
+    if(valorComBin !== enterog){
     io.emit('microcontrolador:data',{
-        value: data.toString()
+        value: distancia.toString()
     });
+    }
+    enterog = valorComBin;
 });
 
 //Ocurre un error
