@@ -46,12 +46,9 @@ mySerial.on("data", function(data){
     const distancia = (Rsen - 10000)/(-200);
     console.log(distancia);
     //console.log(data.toString);
-    if(valorComBin !== enterog){
     io.emit('microcontrolador:data',{
         value: distancia.toString()
     });
-    }
-    enterog = valorComBin;
 });
 
 //Ocurre un error

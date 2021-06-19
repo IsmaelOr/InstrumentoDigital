@@ -14,7 +14,6 @@
     <script>
         const socket = io();
         socket.on('microcontrolador:data', function(dataSerial){
-            console.log(dataSerial);
             //myChart.data.labels.push(counter);
             myChart.data.datasets[0].data.pop();
             myChart.data.datasets[0].data.push(dataSerial.value);
