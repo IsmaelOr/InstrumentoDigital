@@ -5,21 +5,34 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Node de Microcontrolador</title>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+    <style>
+        .white{
+            color: white;
+        }
+    </style>
 </head>
 <body>
-    <h1>Node de PIC16F628A</h1>
-    <canvas width="500px" height="150px" id="myChart"></canvas>
+    <h1 class="mt-3 ms-3">Proyecto sensor de distancia.</h1>
+    <!--<canvas width="500px" height="150px" id="myChart"></canvas> -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.3.2/dist/chart.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const socket = io();
         socket.on('microcontrolador:data', function(dataSerial){
+            console.log(dataSerial.value);
+            ver(dataSerial.value)
             //myChart.data.labels.push(counter);
+            /*
             myChart.data.datasets[0].data.pop();
             myChart.data.datasets[0].data.push(dataSerial.value);
             myChart.update();
+             */
         });
-        var ctx = document.getElementById('myChart').getContext('2d');
+        /*var ctx = document.getElementById('myChart').getContext('2d');
         var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
@@ -41,10 +54,126 @@
                        max:50
                        }
                     }
-                }   
-        });
+                }
+        });*/
     </script>
-    
+    <div class="row">
+        <div class="col-lg-1 col-sm-12 col-md-12">
+        </div>
+        <div class="col-lg-5 col-sm-12 col-md-12">
+            <canvas id="myCanvas" class="img-fluid" style="background-image:url(''); background-repeat:no-repeat;" width="700" height="250"></canvas>
+        </div>
+        <div class="col-lg-5 col-sm-12 col-md-12 mt-5">
+            <div class="container bg-success rounded white py-2">
+                <h2 class="prueba">Node de PIC16F628A</h2>
+                <br>
+                <p>Integrantes:</p>
+                <ul>
+                    <li>Medina Martínez Miguel Angel - 2019630469</li>
+                    <li>Ortega Estrada Ismael - 2019630035</li>
+                    <li>Regis Valero Jorge Jesús - 2019630225</li>
+                </ul>
+                <p>Grupo: 3CV12</p>
+                <p>Profesor: Ismael Cervantes de Anda </p>
+            </div>
+        </div>
+        <div class="col-lg-1 col-sm-12 col-md-12">
+        </div>
+    </div>
+    <script type="text/javascript">
+        var canvas = document.getElementById('myCanvas');
+        var context = canvas.getContext('2d');
+        //var a = 0, b;
+        function ver(value) {
+            var a = eval(value)
+            a = a*10;
+            context.clearRect(0, 0, 650, 400);
+            //main scale
+            context.beginPath();
+            context.moveTo(15, 100);
+            context.lineTo(650, 100);
+            context.lineTo(650, 150);
+            context.lineTo(50, 150);
+            context.lineTo(50, 200);
+            context.lineTo(40, 190);
+            context.lineTo(15, 160);
+            context.lineTo(15, 100);
+            context.closePath();
+            context.lineWidth = 2;
+            context.fillStyle = 'grey';
+            context.fill();
+            // main scale - numerals
+            context.font = 'bold 10pt Calibri';
+            context.fillStyle = 'black';
+            context.fillText(0, 48, 125);
+            context.fillText(1, 148, 125);
+            context.fillText(2, 248, 125);
+            context.fillText(3, 348, 125);
+            context.fillText(4, 448, 125);
+            context.fillText(5, 548, 125);
+            context.fillText('cm', 628, 125);
+            context.font = 'bold 10pt Calibri';
+            context.fillStyle = 'white';
+            context.fillText('Proyecto Final Instrumentación', 200, 112);
+
+            // main scale - big ticks
+            for (var i = 50; i < 650; i = i + 100) {
+                context.beginPath();
+                context.moveTo(i, 130);
+                context.lineTo(i, 150);
+                context.strokeStyle = 'white';
+                context.stroke();
+            }
+            // main scale - small ticks
+            for (var i = 50; i < 650; i = i + 10) {
+                context.beginPath();
+                context.moveTo(i, 140);
+                context.lineTo(i, 150);
+                context.strokeStyle = 'white';
+                context.stroke();
+            }
+
+            //vernier scale
+            context.beginPath();
+            context.moveTo(50 + a, 150);
+            context.lineTo(150 + a, 150);
+            context.lineTo(150 + a, 200);
+            context.lineTo(50 + a, 200);
+            context.lineTo(50 + a, 150);
+            context.fillStyle = 'lightgrey';
+            context.fill();
+            // ticks
+            for (var i = 50; i <= 140; i = i + 9) {
+                context.beginPath();
+                context.moveTo(i + a, 150);
+                context.lineTo(i + a, 170);
+                context.strokeStyle = 'black';
+                context.stroke();
+                context.closePath();
+                // numerals
+                context.font = 'bold 8pt Calibri';
+                context.fillStyle = 'black';
+                context.fillText(0, 52 + a, 180);
+                context.fillText(5, 95 + a, 180);
+                context.fillText(10, 135 + a, 180);
+            }
+            //spring
+            context.beginPath();
+            context.moveTo(50, 165);
+            context.lineTo(50 + a, 165 + 2 * Math.sin(a));
+            context.lineWidth = 3;
+            context.strokeStyle = 'red';
+            context.stroke();
+            context.closePath();
+            // readings
+            context.font = '10pt Calibri';
+            context.fillStyle = 'blue';
+            context.fillText(a / 10 + ' mm', 50 + a / 2, 220);
+            //context.font = 'bold 20pt Calibri';
+            //context.fillText('Vivax Solutions', 200, 50);
+        }
+        window.onload = ver(0);
+    </script>
 </body>
 </html>
 
